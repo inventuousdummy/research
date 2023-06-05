@@ -29,7 +29,7 @@ my_skim <- skim_with(
 ```
 
 ```{r}
-data <- read_csv("respostas.csv")
+data <- read_csv("data.csv")
 data$nivel_dificuldade <- as.integer(data$nivel_dificuldade)
 data$nivel_raciocinio_logico <- as.integer(data$nivel_raciocinio_logico)
 head(data)
