@@ -1,0 +1,78 @@
+---
+title: "metodologia"
+format: html
+editor: visual
+---
+
+```{r, results='hide'}
+library(readr)
+```
+
+```{r, results='hide'}
+library(skimr)
+```
+
+```{r, echo=FALSE}
+my_skim <- skim_with(
+  base = sfl(
+    size = length
+  ),
+  numeric = sfl(
+    mean = mean,
+    sd = sd,
+    min = min,
+    median = median,
+    max = max
+  ),
+  append = FALSE
+)
+```
+
+```{r}
+data <- read_csv("respostas.csv")
+data$nivel_dificuldade <- as.integer(data$nivel_dificuldade)
+data$nivel_raciocinio_logico <- as.integer(data$nivel_raciocinio_logico)
+head(data)
+```
+
+```{r}
+my_skim(data)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(data, aes(x = nivel_dificuldade, y = nivel_raciocinio_logico)) +
+  geom_point()
+```
+
+```{r}
+correlacao <- cor(data[, c("nivel_dificuldade", "nivel_raciocinio_logico")], method = "spearman")
+print(correlacao)
+```
+
+```{r}
+dados <- subset(data, grepl("Matemática", disciplinas, fixed=TRUE))
+```
+
+```{r}
+print(dados)
+frame <- data.frame(values = dados$nivel_dificuldade)
+```
+
+```{r}
+ggplot(frame, aes(x = values)) +
+  geom_histogram(fill = "steelblue", color = "white", bins = 5) +
+  labs(title = "Histogram", x = "Values", y = "Frequency") +
+  theme_minimal()
+```
+
+```{r}
+shapiro.test(data$nivel_dificuldade)
+```
+
+```{r}
+shapiro.test(data$nivel_raciocinio_logico)
+```
